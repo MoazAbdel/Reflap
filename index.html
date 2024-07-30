@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
             overflow: hidden;
         }
         body{
-            background: url(2.jpg);
+            background: url(5.jpg);
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -114,7 +114,21 @@
             padding: 0 4vm;
             transition: .3s;
         }
+        .picture-form{
+            position: absolute;
+            left: -50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 89%;
+            padding: 0 4vm;
+            transition: .3s;
+        }
         .email-form .form-title{
+            margin-block: 40px 20px;
+        }
+        .upload-form .form-title{
             margin-block: 40px 20px;
         }
         .form-title{
@@ -181,6 +195,95 @@
             cursor: pointer;
             transition: .3s;
         }
+        .container {
+            margin-left: 30px;
+            margin-bottom: 10px;
+         	max-width: 400px;
+	        width: 80%;
+        	background: rgba(255, 255, 255, 0.3);;
+	        padding: 10px 20px;
+        	border-radius: 30px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+        .img-area {
+         	position: relative;
+        	width:  80%;
+         	height: 80px;
+            margin-right:10px;
+        	background: rgba(239, 237, 237, 0.589);
+        	margin-bottom: 5px;
+        	border-radius: 200%;
+        	overflow: hidden;
+        	display: flex;
+        	justify-content: center;
+        	align-items: center;
+        	flex-direction: column;
+        }
+        .img-area .icon {
+        	font-size: 30px;
+        }
+        .img-area img {
+       	position: absolute;
+    	top: 0;
+       	left: 0;
+     	width: 100%;
+    	height: 100%;
+    	object-fit: cover;
+    	object-position: center;
+    	z-index: 100;
+        }
+        .img-area::before {
+    	content: attr(data-img);
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	width: 80%;
+    	height: 80%;
+    	background: rgba(0, 0, 0, .5);
+    	color: #fff;
+     	font-weight: 500;
+    	text-align: center;
+     	display: flex;
+	    justify-content: center;
+    	align-items: center;
+    	pointer-events: none;
+    	opacity: 0;
+    	transition: all .3s ease;
+    	z-index: 200;
+        }
+        .img-area.active:hover::before {
+    	 opacity: 1;
+        }
+        .select-image {
+    	display: block;
+    	width: 100%;
+    	padding: 14px 5px;
+    	border-radius: 15px;
+    	background: rgba(0, 0, 255, .5);
+     	color: #fff;
+    	font-weight: 500;
+    	font-size: 16px;
+    	border: none;
+	   cursor: pointer;
+    	transition: all .3s ease;
+        }
+        .select-image:hover {
+	    background: darkblue;
+        }
+        @media (max-width: 600px) {
+            .form-container{
+                width: 400px;
+            }
+            .col1{
+                display: none;
+            }
+            .col2{
+                width: 100%;
+            }
+
+        }
     </style>
 </head>
 <body>
@@ -224,7 +327,7 @@
                     <i class="bx bx-lock-alt icon"></i>
                 </div>
                 <div class="input-box">
-                    <button class="input-submit">
+                    <button class="input-submit" id="sub-first">
                         <span>Create Account</span>
                         <i class="bx bx-right-arrow-alt"></i>
                     </button>
@@ -243,7 +346,29 @@
                     <i class='bx bx-envelope icon' ></i>
                 </div>
                 <div class="input-box">
-                    <button class="input-submit">
+                    <button class="input-submit" id="sub-second">
+                        <span>Submit</span>
+                        <i class="bx bx-right-arrow-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--Third Screen-->
+        <div class="picture-form">
+            <div class="form-title">
+                <span>Upload Profile Photo</span>
+                <p>Congrats! You Created Your Reflap Profile Please Insert Your Profile Picture.</p>
+            </div>
+            <div class="form-inputs">
+                <div class="container">
+                    <input type="file" id="file" accept="image/*" hidden>
+                    <div class="img-area" data-img="">
+                        <i class='bx bxs-cloud-upload icon'></i>
+                    </div>
+                    <button class="select-image">Select Image</button>
+                </div>
+                <div class="input-box">
+                    <button class="input-submit" id="sub-third">
                         <span>Submit</span>
                         <i class="bx bx-right-arrow-alt"></i>
                     </button>
@@ -257,7 +382,9 @@
     const registerBtn = document.querySelector("#register");
     const loginForm = document.querySelector(".login-form");
     const registerForm = document.querySelector(".email-form");
-    const emailChk = document.querySelector(".input-submit")
+    const photoForm = document.querySelector(".picture-form");
+    const emailChk = document.querySelector("#sub-first")
+    const uplfot = document.querySelector("#sub-second")
     loginBtn.addEventListener('click', () => {
         loginBtn.style.backgroundColor = "#21264D";
         registerBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
@@ -265,16 +392,27 @@
     registerBtn.addEventListener('click', () => {
         loginForm.style.left = "150%"
         registerForm.style.left = "50%"
+        photoForm.style.left = "-50%"
         loginForm.style.opacity = "0"
         registerForm.style.opacity = "1"
         loginBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
         registerBtn.style.backgroundColor = "#21264D";
+        photoForm.style.opacity = "0"
     })
     emailChk.addEventListener('click', () => {
         loginForm.style.left = "50%"
+        photoForm.style.left = "-50%"
         registerForm.style.left = "-50%"
         loginForm.style.opacity = "1"
         registerForm.style.opacity = "0"
+        photoForm.style.opacity = "0"
+    })
+    uplfot.addEventListener('click', () => {
+        photoForm.style.left = "50%"
+        registerForm.style.left = "-50%"
+        loginForm.style.opacity = "0"
+        registerForm.style.opacity = "0"
+        photoForm.style.opacity = "1"
     })
  </script>
 </body>
